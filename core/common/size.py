@@ -1,7 +1,8 @@
 from django_enumfield import enum
 
+
 class Size(enum.Enum):
-    """ 
+    """
     Sizes choices for coffee
     """
 
@@ -11,10 +12,10 @@ class Size(enum.Enum):
     EXTRA_LARGE = 4
 
     __labels__ = {
-        SMALL: 'Small',
-        MEDIUM: 'Medium',
-        LARGE: 'Large',
-        EXTRA_LARGE: 'Extra Large',
+        SMALL: "Small",
+        MEDIUM: "Medium",
+        LARGE: "Large",
+        EXTRA_LARGE: "Extra Large",
     }
 
     __default__ = SMALL

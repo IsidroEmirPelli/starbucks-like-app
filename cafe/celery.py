@@ -16,14 +16,16 @@ app = Celery("cafe")
 
 # read config from Django settings, the CELERY namespace would make celery
 # config keys has `CELERY` prefix
-app.config_from_object('django.conf:settings', namespace='CELERY')
+app.config_from_object("django.conf:settings", namespace="CELERY")
 
 # discover and load tasks.py from from all registered Django apps
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
-app.conf.timezone = 'America/Argentina/Buenos_Aires'
+app.conf.timezone = "America/Argentina/Buenos_Aires"
+
 
 @app.task
 def divide(x, y):
     import time
+
     time.sleep(5)
     return x / y

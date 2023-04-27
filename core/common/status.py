@@ -1,5 +1,6 @@
 from django_enumfield import enum
 
+
 class Status(enum.Enum):
     """
     Status choices for user profile
@@ -10,9 +11,9 @@ class Status(enum.Enum):
     BANNED = 3
 
     __labels__ = {
-        ACTIVE: 'Active',
-        INACTIVE: 'Inactive',
-        BANNED: 'Banned',
+        ACTIVE: "Active",
+        INACTIVE: "Inactive",
+        BANNED: "Banned",
     }
 
     __default__ = ACTIVE
