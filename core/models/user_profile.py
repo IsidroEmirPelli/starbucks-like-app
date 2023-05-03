@@ -20,7 +20,7 @@ class UserProfile(models.Model):
     )
     prefered_size = enum.EnumField(Size, default=Size.SMALL)
     points = models.IntegerField(default=0)
-    status = models.EnumField(Status, default=Status.ACTIVE)
+    status = enum.EnumField(Status, default=Status.ACTIVE)
 
     def __str__(self):
         return f"{self.user.username} - {self.address} - {self.city} - {self.state} - {self.country} - {self.postal_code} - {self.phone}"
