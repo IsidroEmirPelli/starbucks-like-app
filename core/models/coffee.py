@@ -10,7 +10,7 @@ class Coffee(models.Model):
     last_update = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.name} - {self.price} - {self.description} - {self.image} - {self.creation_date} - {self.last_update}"
+        return f"{self.name} - {self.price}"
 
     class Meta:
         verbose_name = "Coffee"
