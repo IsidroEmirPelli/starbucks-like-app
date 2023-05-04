@@ -12,7 +12,7 @@ class Promotion(models.Model):
     filters = models.JSONField(null=True, blank=True)
 
     def __str__(self):
-        return f"{self.name} - {self.description} - {self.image} - {self.creation_date} - {self.last_update}"
+        return f"{self.name} - {self.description} - {self.creation_date} - {self.last_update}"
 
     class Meta:
         verbose_name = "Promotion"
