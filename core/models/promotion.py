@@ -5,9 +5,7 @@ class Promotion(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField()
     percentaje = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    coffee_related = models.ForeignKey(
-        "core.Coffee", on_delete=models.CASCADE, null=True, blank=True
-    )
+    coffee_related = models.ManyToManyField("core.Coffee", null=True, blank=True)
     expire_date = models.DateTimeField()
     creation_date = models.DateTimeField(auto_now_add=True)
     users = models.ManyToManyField("auth.User", related_name="promotions")
