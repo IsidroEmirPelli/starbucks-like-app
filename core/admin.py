@@ -1,5 +1,5 @@
 from django.contrib import admin
-from models import Buy, Campain, Card, Coffee, Promotion, recharge, UserProfile
+from .models import Buy, Campain, Card, Coffee, Promotion, recharge, UserProfile
 # Register your models here.
 
 admin.register(Buy)
