@@ -14,9 +14,12 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
+from rest_framework import routers
+
 from api.views import PromotionViewSet
 
-urlpatterns = [
-    path("promotions/", PromotionViewSet.as_view({"get": "list", "post": "create"})),
-    path("promotions/<int:pk>/", PromotionViewSet.as_view({"get": "retrieve", "put": "update", "delete": "destroy"})),
-]
+router = routers.SimpleRouter()
+
+router.register(r"promotions", PromotionViewSet)
+
+urlpatterns = router.urls

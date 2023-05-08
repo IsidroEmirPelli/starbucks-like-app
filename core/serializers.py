@@ -30,8 +30,17 @@ class CoffeeSerializer(serializers.ModelSerializer):
 class PromotionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Promotion
-        fields = "name", "description", "creation_date", "filters", "percentaje", "coffee_related", "expire_date",
-        read_only_fields = "users",
+        fields = (
+            "name",
+            "description",
+            "creation_date",
+            "filters",
+            "percentaje",
+            "coffee_related",
+            "expire_date",
+        )
+        read_only_fields = ("users",)
+
 
 class RechargeSerializer(serializers.ModelSerializer):
     class Meta:
