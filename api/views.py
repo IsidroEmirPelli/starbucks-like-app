@@ -18,4 +18,4 @@ from core.serializers import (
 class PromotionViewSet(viewsets.ModelViewSet):
     queryset = Promotion.objects.all()
     serializer_class = PromotionSerializer
-    permission_classes = []
+    permission_classes = [AdminPermission, IsAuthenticated]
