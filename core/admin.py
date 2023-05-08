@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Buy, Campain, Card, Coffee, Promotion, Recharge, UserProfile
+
 # Register your models here.
 
 admin.site.register(Buy)

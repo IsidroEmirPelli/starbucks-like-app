@@ -34,16 +34,18 @@ except AttributeError:
 # Application definition
 
 INSTALLED_APPS = [
-    'jazzmin',
+    "jazzmin",
+    "rest_framework",
     "django_celery_beat",
-
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
     "core",
+    "api",
 ]
 
 MIDDLEWARE = [
@@ -137,7 +139,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
 CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
 
-CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
 JAZZMIN_UI_TWEAKS = {
     "theme": "minty",
