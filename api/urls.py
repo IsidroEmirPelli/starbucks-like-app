@@ -16,10 +16,34 @@ Including another URLconf
 from django.urls import path
 from rest_framework import routers
 
-from api.views import PromotionViewSet
+from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
+
+from api.views import (
+    PromotionViewSet,
+    CampainViewSet,
+    CoffeeViewSet,
+    RechargeViewSet,
+    UserProfileViewSet,
+    BuyViewSet,
+    CardViewSet,
+)
 
 router = routers.SimpleRouter()
 
 router.register(r"promotions", PromotionViewSet)
+router.register(r"campains", CampainViewSet)
+router.register(r"coffees", CoffeeViewSet)
+router.register(r"recharges", RechargeViewSet)
+router.register(r"users", UserProfileViewSet)
+router.register(r"buys", BuyViewSet)
+router.register(r"cards", CardViewSet)
 
-urlpatterns = router.urls
+urlpatterns = [
+    # YOUR PATTERNS
+    path('schema/', SpectacularAPIView.as_view(), name='schema'),
+    # Optional UI:
+    path('swagger/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('doc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
+]
+
+urlpatterns += router.urls

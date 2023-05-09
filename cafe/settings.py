@@ -36,6 +36,8 @@ except AttributeError:
 INSTALLED_APPS = [
     "jazzmin",
     "rest_framework",
+    "drf_spectacular",
+    "drf_spectacular_sidecar",
     "django_celery_beat",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -142,4 +144,16 @@ CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 
 JAZZMIN_UI_TWEAKS = {
     "theme": "minty",
+}
+
+SPECTACULAR_SETTINGS = {
+    'SWAGGER_UI_DIST': 'SIDECAR',  # shorthand to use the sidecar instead
+    'SWAGGER_UI_FAVICON_HREF': 'SIDECAR',
+    'REDOC_DIST': 'SIDECAR',
+    # OTHER SETTINGS
+}
+
+REST_FRAMEWORK = {
+    # YOUR SETTINGS
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }

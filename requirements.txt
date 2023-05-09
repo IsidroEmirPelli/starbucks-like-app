@@ -8,3 +8,4 @@ django-enumfield==3.1
 Pillow
 django-jazzmin
 djangorestframework
+drf-spectacular[sidecar]
