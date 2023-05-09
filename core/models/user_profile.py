@@ -1,5 +1,6 @@
 from django.db import models
 from django_enumfield import enum
+from django.core.validators import MinValueValidator, MaxValueValidator
 
 from core.common import Size, Status
 
@@ -19,7 +20,7 @@ class UserProfile(models.Model):
         "core.Coffee", on_delete=models.CASCADE, null=True, blank=True
     )
     prefered_size = enum.EnumField(Size, default=Size.SMALL)
-    points = models.IntegerField(default=0)
+    points = models.IntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(100000)])
     status = enum.EnumField(Status, default=Status.ACTIVE)
 
     def __str__(self):
