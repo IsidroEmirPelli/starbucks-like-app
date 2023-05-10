@@ -3,7 +3,6 @@ import mercadopago
 
 
 def create_payment(recharge):
-    print("MercadoPago Module")
     access_token = os.environ.get("MERCADOPAGO_ACCESS")
     sdk = mercadopago.SDK(access_token)
     payment_data = {
