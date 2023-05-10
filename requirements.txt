@@ -9,3 +9,4 @@ Pillow
 django-jazzmin
 djangorestframework
 drf-spectacular[sidecar]
+mercadopago
