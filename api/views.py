@@ -19,14 +19,16 @@ from core.serializers import (
 
 # Create your views here.
 class PromotionViewSet(viewsets.ModelViewSet):
-    """ Viewset for promotion's model """
+    """Viewset for promotion's model"""
+
     queryset = Promotion.objects.all()
     serializer_class = PromotionSerializer
     permission_classes = [AdminPermission, IsAuthenticated]
 
 
 class UserProfileViewSet(viewsets.ModelViewSet):
-    """ Viewset for user profile model """
+    """Viewset for user profile model"""
+
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
     permission_classes = [AdminPermission, IsAuthenticated]
@@ -39,7 +41,8 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 
 
 class RechargeViewSet(viewsets.ModelViewSet):
-    """ Viewset for recharge model """
+    """Viewset for recharge model"""
+
     queryset = Recharge.objects.all()
     serializer_class = RechargeSerializer
     permission_classes = [IsAuthenticated]
@@ -52,7 +55,7 @@ class RechargeViewSet(viewsets.ModelViewSet):
             response = create_payment(recharge)
             if response["status"] == 400:
                 return Response(response, status=status.HTTP_400_BAD_REQUEST)
-            recharge.mercado_pago_data= response
+            recharge.mercado_pago_data = response
             recharge.save()
             return Response(recharge.mercado_pago_data, status=status.HTTP_201_CREATED)
         except Exception as e:
@@ -60,7 +63,8 @@ class RechargeViewSet(viewsets.ModelViewSet):
 
 
 class BuyViewSet(viewsets.ModelViewSet):
-    """ Viewset for buy model """
+    """Viewset for buy model"""
+
     queryset = Buy.objects.all()
     serializer_class = BuySerializer
     permission_classes = [IsAuthenticated]

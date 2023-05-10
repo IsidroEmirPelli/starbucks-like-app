@@ -20,7 +20,9 @@ class UserProfile(models.Model):
         "core.Coffee", on_delete=models.CASCADE, null=True, blank=True
     )
     prefered_size = enum.EnumField(Size, default=Size.SMALL)
-    points = models.IntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(100000)])
+    points = models.IntegerField(
+        default=0, validators=[MinValueValidator(0), MaxValueValidator(100000)]
+    )
     status = enum.EnumField(Status, default=Status.ACTIVE)
 
     def __str__(self):

@@ -7,23 +7,43 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('core', '0002_remove_promotion_coffee_related_and_more'),
+        ("core", "0002_remove_promotion_coffee_related_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='buy',
-            name='price',
-            field=models.DecimalField(decimal_places=2, default=0, max_digits=10, validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(1000000)]),
+            model_name="buy",
+            name="price",
+            field=models.DecimalField(
+                decimal_places=2,
+                default=0,
+                max_digits=10,
+                validators=[
+                    django.core.validators.MinValueValidator(0),
+                    django.core.validators.MaxValueValidator(1000000),
+                ],
+            ),
         ),
         migrations.AlterField(
-            model_name='buy',
-            name='quantity',
-            field=models.IntegerField(default=1, validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(100)]),
+            model_name="buy",
+            name="quantity",
+            field=models.IntegerField(
+                default=1,
+                validators=[
+                    django.core.validators.MinValueValidator(0),
+                    django.core.validators.MaxValueValidator(100),
+                ],
+            ),
         ),
         migrations.AlterField(
-            model_name='userprofile',
-            name='points',
-            field=models.IntegerField(default=0, validators=[django.core.validators.MinValueValidator(0), django.core.validators.MaxValueValidator(100000)]),
+            model_name="userprofile",
+            name="points",
+            field=models.IntegerField(
+                default=0,
+                validators=[
+                    django.core.validators.MinValueValidator(0),
+                    django.core.validators.MaxValueValidator(100000),
+                ],
+            ),
         ),
     ]
