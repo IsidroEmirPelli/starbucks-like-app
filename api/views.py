@@ -34,13 +34,7 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
-    permission_classes = [AdminPermission, IsAuthenticated]
-
-    def create(self, request, *args, **kwargs):
-        if request.user.is_staff:
-            return super().create(request, *args, **kwargs)
-        else:
-            return Response(status=status.HTTP_403_FORBIDDEN)
+    permission_classes = [IsAuthenticated]
 
 
 class RechargeViewSet(viewsets.ModelViewSet):
@@ -64,36 +58,37 @@ class RechargeViewSet(viewsets.ModelViewSet):
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
+    def list(self, request, *args, **kwargs):
+        if request.user.is_staff:
+            return super().list(request, *args, **kwargs)
+        if request.user.is_authenticated:
+            queryset = Recharge.objects.filter(user=request.user)
+            serializer = RechargeSerializer(queryset, many=True)
+            return Response(serializer.data)
+
 
 class OrderViewSet(viewsets.ModelViewSet):
-    """Viewset for order model"""
+    """
+    Viewset For Order Model
+    Example of request:
+    {
+    "buys": [
+        {
+        "quantity": 100,
+        "size": 1,
+        "price": "25.00",
+        "user": 0,
+        "coffee": 0
+        }
+    ],
+    "total_price": "string",
+    "user": 0
+    }
+    """
 
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
-    permission_classes = [IsAuthenticated]
-
-    def create(self, request, *args, **kwargs):
-        """
-        Viewset For Order Model
-        Example of request:
-        {
-        "buys": [
-            {
-            "quantity": 100,
-            "size": 1,
-            "price": "25.00",
-            "user": 0,
-            "coffee": 0
-            }
-        ],
-        "total_price": "string",
-        "user": 0
-        }
-        """
-        if request.user.is_staff:
-            return super().create(request, *args, **kwargs)
-        else:
-            return Response(status=status.HTTP_403_FORBIDDEN)
+    permission_classes = [IsAuthenticated, AdminPermission]
 
 
 class CampainViewSet(viewsets.ModelViewSet):
@@ -107,12 +102,6 @@ class CardViewSet(viewsets.ModelViewSet):
     serializer_class = CardSerializer
     permission_classes = [IsAuthenticated]
 
-    def create(self, request, *args, **kwargs):
-        if request.user.is_staff:
-            return super().create(request, *args, **kwargs)
-        else:
-            return Response(status=status.HTTP_403_FORBIDDEN)
-
 
 class CoffeeViewSet(viewsets.ModelViewSet):
     queryset = Coffee.objects.all()
@@ -125,9 +114,8 @@ class UserViewSet(
 ):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [AdminPermission, IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
-        if request.data["is_staff"] == "true":
+        if "is_staff" in request.data and request.data["is_staff"] == True:
             return Response(status=status.HTTP_403_FORBIDDEN)
         return super().create(request, *args, **kwargs)

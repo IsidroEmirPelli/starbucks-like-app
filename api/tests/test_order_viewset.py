@@ -3,7 +3,7 @@ from core.models import Order, Coffee
 from django.contrib.auth.models import User
 
 
-class OrderviewSetTestCase(APITestCase):
+class OrderViewSetTestCase(APITestCase):
     def setUp(self):
         self.coffee = Coffee.objects.create(
             name="Cafe",
@@ -40,6 +40,7 @@ class OrderviewSetTestCase(APITestCase):
 
     def test_order_viewset(self):
         response = self.client.post("/api/v1/order/", self.data, format="json")
+        print(response)
         self.assertEqual(response.status_code, 201)
 
         response = self.client.get("/api/v1/order/")
