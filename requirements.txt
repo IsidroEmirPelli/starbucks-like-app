@@ -10,3 +10,5 @@ django-jazzmin
 djangorestframework
 drf-spectacular[sidecar]
 mercadopago
+pytest-django
+pytest-cov

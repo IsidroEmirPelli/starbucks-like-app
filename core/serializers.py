@@ -16,6 +16,14 @@ class OrderSerializer(serializers.ModelSerializer):
         model = Order
         fields = "__all__"
 
+    def create(self, validated_data):
+        buys_data = validated_data.pop("buys")
+        order = Order.objects.create(**validated_data)
+
+        for buy_data in buys_data:
+            order.buys.add(Buy.objects.create(**buy_data))
+        return order
+
 
 class CampainSerializer(serializers.ModelSerializer):
     class Meta:
