@@ -120,7 +120,9 @@ class CoffeeViewSet(viewsets.ModelViewSet):
     permission_classes = [AdminPermission, IsAuthenticated]
 
 
-class UserViewSet(mixins.CreateModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
+class UserViewSet(
+    mixins.CreateModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet
+):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [AdminPermission, IsAuthenticated]
