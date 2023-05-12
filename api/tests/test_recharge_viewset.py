@@ -39,15 +39,20 @@ class OrderViewSetTestCase(APITestCase):
             is_staff=True,
         )
         self.client.force_authenticate(user=self.user)
-        self.data = {
+
+    def create_order(self, user):
+        data = {
             "amount": "22",
             "token": "ada",
             "installments": 2,
             "payment_method_id": "2",
             "identification_type": "2",
             "identification_number": "1",
-            "user": self.user.id,
+            "user": user.id,
         }
+
+        response = self.client.post("/api/v1/recharge/", data, format="json")
+        return response
 
     def test_order_viewset(self):
         def mock_create_payment(recharge):
@@ -56,7 +61,7 @@ class OrderViewSetTestCase(APITestCase):
         monkeypatch = pytest.MonkeyPatch()
         monkeypatch.setattr("api.views.create_payment", mock_create_payment)
 
-        response = self.client.post("/api/v1/recharge/", self.data, format="json")
+        response = self.create_order(self.user)
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response.data, MP_RESPONSE)
 
@@ -67,8 +72,36 @@ class OrderViewSetTestCase(APITestCase):
         monkeypatch = pytest.MonkeyPatch()
         monkeypatch.setattr("api.views.create_payment", mock_create_payment)
 
-        response = self.client.post("/api/v1/recharge/", self.data, format="json")
+        response = self.create_order(self.user)
         self.assertEqual(response.status_code, 400)
+
+    def test_add_other_user(self):
+        def mock_create_payment(recharge):
+            return MP_RESPONSE
+
+        monkeypatch = pytest.MonkeyPatch()
+        monkeypatch.setattr("api.views.create_payment", mock_create_payment)
+
+        user = User.objects.create(
+            username="test1",
+            email="testing1@test.com",
+            password="test1234",
+        )
+        self.client.force_authenticate(user=user)
+        response = self.create_order(user)
+        self.assertEqual(response.status_code, 201)
+
+        response = self.client.get("/api/v1/recharge/")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.data), 1)
+
+        self.client.force_authenticate(user=self.user)
+        for i in range(2):
+            response = self.create_order(self.user)
+            self.assertEqual(response.status_code, 201)
+        response = self.client.get("/api/v1/recharge/")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.data), 3)
 
     def test_order_viewset_with_recharge_none(self):
         def mock_create_payment(recharge):
@@ -76,6 +109,6 @@ class OrderViewSetTestCase(APITestCase):
 
         monkeypatch = pytest.MonkeyPatch()
         monkeypatch.setattr("api.views.create_payment", mock_create_payment)
-        response = self.client.post("/api/v1/recharge/", self.data, format="json")
+        response = self.create_order(self.user)
         self.assertEqual(response.status_code, 400)
         assert response.data["error"] != ""
