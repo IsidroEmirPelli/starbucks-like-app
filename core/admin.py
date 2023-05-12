@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Buy, Campain, Card, Coffee, Promotion, Recharge, UserProfile
+from .models import Buy, Campain, Card, Coffee, Promotion, Recharge, UserProfile, Order
 
 # Register your models here.
 
@@ -10,3 +10,4 @@ admin.site.register(Coffee)
 admin.site.register(Promotion)
 admin.site.register(Recharge)
 admin.site.register(UserProfile)
+admin.site.register(Order)

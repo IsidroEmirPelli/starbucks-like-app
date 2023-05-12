@@ -28,7 +28,7 @@ from api.views import (
     CoffeeViewSet,
     RechargeViewSet,
     UserProfileViewSet,
-    BuyViewSet,
+    OrderViewSet,
     CardViewSet,
 )
 
@@ -39,7 +39,7 @@ router.register(r"campains", CampainViewSet)
 router.register(r"coffees", CoffeeViewSet)
 router.register(r"recharges", RechargeViewSet)
 router.register(r"users", UserProfileViewSet)
-router.register(r"buys", BuyViewSet)
+router.register(r"order", OrderViewSet)
 router.register(r"cards", CardViewSet)
 
 urlpatterns = [

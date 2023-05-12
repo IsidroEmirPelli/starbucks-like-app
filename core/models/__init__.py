@@ -5,3 +5,4 @@ from .coffee import Coffee
 from .promotion import Promotion
 from .recharge import Recharge
 from .user_profile import UserProfile
+from .order import Order

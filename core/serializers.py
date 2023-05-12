@@ -1,11 +1,19 @@
 from rest_framework import serializers
 
-from .models import Buy, Campain, Card, Coffee, Promotion, Recharge, UserProfile
+from .models import Campain, Card, Coffee, Promotion, Recharge, UserProfile, Order, Buy
 
 
 class BuySerializer(serializers.ModelSerializer):
     class Meta:
         model = Buy
+        fields = "__all__"
+
+
+class OrderSerializer(serializers.ModelSerializer):
+    buys = BuySerializer(many=True)
+
+    class Meta:
+        model = Order
         fields = "__all__"
 
 

@@ -5,10 +5,10 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from core.permissions import AdminPermission
-from core.models import Buy, Campain, Card, Coffee, Promotion, Recharge, UserProfile
+from core.models import Order, Campain, Card, Coffee, Promotion, Recharge, UserProfile
 from core.utils import create_payment
 from core.serializers import (
-    BuySerializer,
+    OrderSerializer,
     CampainSerializer,
     CardSerializer,
     CoffeeSerializer,
@@ -62,14 +62,31 @@ class RechargeViewSet(viewsets.ModelViewSet):
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class BuyViewSet(viewsets.ModelViewSet):
-    """Viewset for buy model"""
+class OrderViewSet(viewsets.ModelViewSet):
+    """Viewset for order model"""
 
-    queryset = Buy.objects.all()
-    serializer_class = BuySerializer
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
     permission_classes = [IsAuthenticated]
 
     def create(self, request, *args, **kwargs):
+        """
+        Viewset For Order Model
+        Example of request:
+        {
+        "buys": [
+            {
+            "quantity": 100,
+            "size": 1,
+            "price": "25.00",
+            "user": 0,
+            "coffee": 0
+            }
+        ],
+        "total_price": "string",
+        "user": 0
+        }
+        """
         if request.user.is_staff:
             return super().create(request, *args, **kwargs)
         else:
