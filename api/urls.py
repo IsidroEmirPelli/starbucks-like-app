@@ -27,6 +27,7 @@ from api.views import (
     CampainViewSet,
     CoffeeViewSet,
     RechargeViewSet,
+    UserViewSet,
     UserProfileViewSet,
     OrderViewSet,
     CardViewSet,
@@ -34,13 +35,14 @@ from api.views import (
 
 router = routers.SimpleRouter()
 
-router.register(r"promotions", PromotionViewSet)
-router.register(r"campains", CampainViewSet)
-router.register(r"coffees", CoffeeViewSet)
-router.register(r"recharges", RechargeViewSet)
-router.register(r"users", UserProfileViewSet)
+router.register(r"promotion", PromotionViewSet)
+router.register(r"campain", CampainViewSet)
+router.register(r"coffee", CoffeeViewSet)
+router.register(r"recharge", RechargeViewSet)
+router.register(r"user", UserViewSet)
+router.register(r"userprofile", UserProfileViewSet)
 router.register(r"order", OrderViewSet)
-router.register(r"cards", CardViewSet)
+router.register(r"card", CardViewSet)
 
 urlpatterns = [
     # YOUR PATTERNS

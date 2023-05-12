@@ -1,4 +1,6 @@
 from django.shortcuts import render
+from django.contrib.auth.models import User
+from rest_framework import mixins
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -14,6 +16,7 @@ from core.serializers import (
     CoffeeSerializer,
     PromotionSerializer,
     RechargeSerializer,
+    UserSerializer,
     UserProfileSerializer,
 )
 
@@ -115,3 +118,14 @@ class CoffeeViewSet(viewsets.ModelViewSet):
     queryset = Coffee.objects.all()
     serializer_class = CoffeeSerializer
     permission_classes = [AdminPermission, IsAuthenticated]
+
+
+class UserViewSet(mixins.CreateModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [AdminPermission, IsAuthenticated]
+
+    def create(self, request, *args, **kwargs):
+        if request.data["is_staff"] == "true":
+            return Response(status=status.HTTP_403_FORBIDDEN)
+        return super().create(request, *args, **kwargs)
