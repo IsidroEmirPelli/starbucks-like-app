@@ -12,3 +12,4 @@ drf-spectacular[sidecar]
 mercadopago
 pytest-django
 pytest-cov
+pytest-mock
