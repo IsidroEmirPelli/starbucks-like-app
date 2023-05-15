@@ -153,7 +153,9 @@ class UserViewSet(
     def update(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return super().update(request, *args, **kwargs)
+        return Response(status=status.HTTP_403_FORBIDDEN)
 
     def partial_update(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return super().partial_update(request, *args, **kwargs)
+        return Response(status=status.HTTP_403_FORBIDDEN)
