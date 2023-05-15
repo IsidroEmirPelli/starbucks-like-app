@@ -6,6 +6,9 @@ import sys
 
 def main():
     """Run administrative tasks."""
+    # create logs folder
+    if not os.path.exists("logs"):
+        os.mkdir("logs")
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "cafe.settings")
     try:
         from django.core.management import execute_from_command_line
