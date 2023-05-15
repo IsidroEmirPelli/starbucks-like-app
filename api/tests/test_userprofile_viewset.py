@@ -17,7 +17,6 @@ class UserProfileViewSetTestCase(APITestCase):
             price=100,
         )
         self.data = {
-            "balance": "22",
             "address": "235",
             "city": "La Matanza",
             "state": "Buenos Aires",
@@ -25,7 +24,6 @@ class UserProfileViewSetTestCase(APITestCase):
             "postal_code": "1754",
             "phone": "1234567890",
             "prefered_size": 1,
-            "points": 19,
             "status": 1,
             "user": self.user.id,
             "favorite_coffee": self.coffee.id,
@@ -38,4 +36,4 @@ class UserProfileViewSetTestCase(APITestCase):
 
         response = self.client.get("/api/v1/userprofile/")
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data[0]["balance"], "22.00")
+        self.assertEqual(response.data[0]["phone"], "1234567890")

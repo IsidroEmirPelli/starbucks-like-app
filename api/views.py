@@ -102,7 +102,7 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, EmployeePermission]
 
 
 class CampainViewSet(viewsets.ModelViewSet):
@@ -145,7 +145,7 @@ class UserViewSet(
         if (
             "is_staff" in request.data
             and request.data["is_staff"] == True
-            or request.data["role"] in [Role.EMPLOYEE, Role.MARKETING]
+            or "role" in request.data and request.data["role"] in [Role.EMPLOYEE, Role.MARKETING]
         ):
             return Response(status=status.HTTP_403_FORBIDDEN)
         return super().create(request, *args, **kwargs)

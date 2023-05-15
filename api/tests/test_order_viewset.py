@@ -1,5 +1,5 @@
 from rest_framework.test import APITestCase
-from core.models import Order, Coffee
+from core.models import Order, Coffee, UserProfile
 from django.contrib.auth.models import User
 
 
@@ -15,6 +15,20 @@ class OrderViewSetTestCase(APITestCase):
             email="testing@test.com",
             password="test1234",
             is_staff=True,
+        )
+        self.userprofile = UserProfile.objects.create(
+            balance=22,
+            address="235",
+            city="La Matanza",
+            state="Buenos Aires",
+            country="Argentina",
+            postal_code="1754",
+            phone="1234567890",
+            prefered_size=1,
+            points=19,
+            status=1,
+            user=self.user,
+            role=2,
         )
         self.client.force_authenticate(user=self.user)
         self.data = {
@@ -49,6 +63,8 @@ class OrderViewSetTestCase(APITestCase):
 
     def test_order_viewset_without_staff(self):
         self.user.is_staff = False
+        self.userprofile.role = 1
+        self.userprofile.save()
         self.user.save()
         response = self.client.post("/api/v1/order/", self.data, format="json")
         self.assertEqual(response.status_code, 403)

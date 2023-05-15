@@ -1,6 +1,7 @@
 from rest_framework.permissions import BasePermission
 
 from .common import Role
+from .models import UserProfile
 
 
 class AdminPermission(BasePermission):
@@ -18,7 +19,8 @@ class ClientPermission(BasePermission):
     """
 
     def has_permission(self, request, view):
-        return request.user and request.user.role == Role.CLIENT
+        if request.user:
+            return UserProfile.objects.filter(user=request.user).first().role == Role.CLIENT
 
 
 class MarketingPermission(BasePermission):
@@ -27,8 +29,9 @@ class MarketingPermission(BasePermission):
     """
 
     def has_permission(self, request, view):
-        return request.user and request.user.role == Role.MARKETING
-
+        if request.user:
+            return UserProfile.objects.filter(user=request.user).first().role == Role.MARKETING
+        return False
 
 class EmployeePermission(BasePermission):
     """
@@ -36,4 +39,6 @@ class EmployeePermission(BasePermission):
     """
 
     def has_permission(self, request, view):
-        return request.user and request.user.role == Role.EMPLOYEE
+        if request.user:
+            return UserProfile.objects.filter(user=request.user).first().role == Role.EMPLOYEE
+        return False
