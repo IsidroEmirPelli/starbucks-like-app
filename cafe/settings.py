@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "core",
     "api",
+    "issue_tracker",
 ]
 
 MIDDLEWARE = [
@@ -155,12 +156,37 @@ SPECTACULAR_SETTINGS = {
     "TITLE": "API",
     "DESCRIPTION": 'API for the app like "Starbucks',
     "VERSION": "0.0.2",
-    'SCHEMA_PATH_PREFIX': '/api/v[0-9]',  # default is '/api/v1/'
-    'SERVE_INCLUDE_SCHEMA': False,  # Deactivate the default schema endpoint
+    "SCHEMA_PATH_PREFIX": "/api/v[0-9]",  # default is '/api/v1/'
+    "SERVE_INCLUDE_SCHEMA": False,  # Deactivate the default schema endpoint
     # 'AUTHENTICATION_WHITELIST': ["rest_framework_simplejwt.authentication.JWTAuthentication"],  # Add JWT to redoc
-    'ENUM_ADD_EXPLICIT_BLANK_NULL_CHOICE': False,  # Deactivate null choice in enum
-    'COMPONENT_SPLIT_REQUEST': True,  # With split components in request increment the accuracy of the schema
+    "ENUM_ADD_EXPLICIT_BLANK_NULL_CHOICE": False,  # Deactivate null choice in enum
+    "COMPONENT_SPLIT_REQUEST": True,  # With split components in request increment the accuracy of the schema
     "SWAGGER_UI_DIST": "SIDECAR",  # shorthand to use the sidecar instead
     "SWAGGER_UI_FAVICON_HREF": "SIDECAR",
     "REDOC_DIST": "SIDECAR",
+}
+
+LOGGING = {
+    "version": 1,
+    "loggers": {"django": {"handlers": ["file", "file2"], "level": "DEBUG"}},
+    "handlers": {
+        "file": {
+            "level": "INFO",
+            "class": "logging.FileHandler",
+            "filename": "./logs/debug.log",
+            "formatter": "simpleRe",
+        },
+        "file2": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": "./logs/debug2.log",
+            "formatter": "simpleRe",
+        },
+    },
+    "formatters": {
+        "simpleRe": {
+            "format": "{levelname} {asctime} {message}",
+            "style": "{",
+        }
+    },
 }

@@ -13,3 +13,4 @@ mercadopago
 pytest-django
 pytest-cov
 pytest-mock
+logging

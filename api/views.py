@@ -19,6 +19,7 @@ from core.serializers import (
     UserSerializer,
     UserProfileSerializer,
 )
+from issue_tracker.utils import create_issue
 
 # Create your views here.
 class PromotionViewSet(viewsets.ModelViewSet):
@@ -56,7 +57,11 @@ class RechargeViewSet(viewsets.ModelViewSet):
             recharge.save()
             return Response(recharge.mercado_pago_data, status=status.HTTP_201_CREATED)
         except Exception as e:
-            print(e)
+            create_issue(
+                title="Error en la recarga",
+                description=f"Error al crear la recarga {recharge.id}",
+                exception=e,
+            )
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
     def list(self, request, *args, **kwargs):
