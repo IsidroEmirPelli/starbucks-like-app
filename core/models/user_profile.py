@@ -2,7 +2,7 @@ from django.db import models
 from django_enumfield import enum
 from django.core.validators import MinValueValidator, MaxValueValidator
 
-from core.common import Size, Status
+from core.common import Size, Status, Role
 
 # Create your models here.
 
@@ -24,6 +24,7 @@ class UserProfile(models.Model):
         default=0, validators=[MinValueValidator(0), MaxValueValidator(100000)]
     )
     status = enum.EnumField(Status, default=Status.ACTIVE)
+    role = enum.EnumField(Role, default=Role.CLIENT)
 
     def __str__(self):
         return f"{self.user.username} - {self.address} - {self.city} - {self.state} - {self.country} - {self.postal_code} - {self.phone}"

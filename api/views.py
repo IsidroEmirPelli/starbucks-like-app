@@ -6,9 +6,10 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 
-from core.permissions import AdminPermission
+from core.common.role import Role
+from core.permissions import AdminPermission, MarketingPermission, EmployeePermission
 from core.models import Order, Campain, Card, Coffee, Promotion, Recharge, UserProfile
-from core.utils import create_payment
+from core.utils import create_payment, filters
 from core.serializers import (
     OrderSerializer,
     CampainSerializer,
@@ -27,7 +28,14 @@ class PromotionViewSet(viewsets.ModelViewSet):
 
     queryset = Promotion.objects.all()
     serializer_class = PromotionSerializer
-    permission_classes = [AdminPermission, IsAuthenticated]
+    permission_classes = [AdminPermission, IsAuthenticated, MarketingPermission]
+
+    def create(self, request, *args, **kwargs):
+        super().create(request, *args, **kwargs)
+        users = filters.get_users_by_filters(request.data["filters"])
+        promotion = Promotion.objects.get(id=request.data["id"])
+        promotion.users.add(*users)
+        promotion.save()
 
 
 class UserProfileViewSet(viewsets.ModelViewSet):
@@ -94,13 +102,20 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
-    permission_classes = [IsAuthenticated, AdminPermission]
+    permission_classes = [IsAuthenticated]
 
 
 class CampainViewSet(viewsets.ModelViewSet):
     queryset = Campain.objects.all()
     serializer_class = CampainSerializer
-    permission_classes = [AdminPermission, IsAuthenticated]
+    permission_classes = [AdminPermission, IsAuthenticated, MarketingPermission]
+
+    def create(self, request, *args, **kwargs):
+        super().create(request, *args, **kwargs)
+        users = filters.get_users_by_filters(request.data["filters"])
+        campain = Campain.objects.get(id=request.data["id"])
+        campain.users.add(*users)
+        campain.save()
 
 
 class CardViewSet(viewsets.ModelViewSet):
@@ -112,7 +127,7 @@ class CardViewSet(viewsets.ModelViewSet):
 class CoffeeViewSet(viewsets.ModelViewSet):
     queryset = Coffee.objects.all()
     serializer_class = CoffeeSerializer
-    permission_classes = [AdminPermission, IsAuthenticated]
+    permission_classes = [AdminPermission, IsAuthenticated, EmployeePermission]
 
 
 class UserViewSet(
@@ -122,6 +137,18 @@ class UserViewSet(
     serializer_class = UserSerializer
 
     def create(self, request, *args, **kwargs):
-        if "is_staff" in request.data and request.data["is_staff"] == True:
+        if (
+            "is_staff" in request.data
+            and request.data["is_staff"] == True
+            or request.data["role"] in [Role.EMPLOYEE, Role.MARKETING]
+        ):
             return Response(status=status.HTTP_403_FORBIDDEN)
         return super().create(request, *args, **kwargs)
+
+    def update(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return super().update(request, *args, **kwargs)
+
+    def partial_update(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return super().partial_update(request, *args, **kwargs)

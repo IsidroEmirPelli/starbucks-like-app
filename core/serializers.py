@@ -30,6 +30,7 @@ class CampainSerializer(serializers.ModelSerializer):
     class Meta:
         model = Campain
         fields = "__all__"
+        read_only_fields = ("users",)
 
 
 class CardSerializer(serializers.ModelSerializer):
@@ -68,10 +69,23 @@ class RechargeSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
-        fields = "__all__"
+        fields = (
+            "address",
+            "city",
+            "state",
+            "country",
+            "phone",
+            "postal_code",
+            "prefered_size",
+            "favorite_coffee",
+            "user",
+        )
+
+    read_only_fields = ("balance", "status", "role", "points")
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ("username", "email", "password", "first_name", "last_name")
+        extra_kwargs = {"password": {"write_only": True}}
