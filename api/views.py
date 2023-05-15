@@ -111,8 +111,13 @@ class CampainViewSet(viewsets.ModelViewSet):
     permission_classes = [AdminPermission, IsAuthenticated, MarketingPermission]
 
     def create(self, request, *args, **kwargs):
-        super().create(request, *args, **kwargs)
         users = filters.get_users_by_filters(request.data["filters"])
+        if users is None:
+            return Response(
+                {"error": "No se encontraron usuarios con los filtros ingresados"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        super().create(request, *args, **kwargs)
         campain = Campain.objects.get(id=request.data["id"])
         campain.users.add(*users)
         campain.save()
