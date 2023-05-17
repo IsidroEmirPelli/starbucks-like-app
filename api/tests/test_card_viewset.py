@@ -26,7 +26,6 @@ class CardViewSetTestCase(APITestCase):
             role=1,
         )
         self.data = {
-            "number": "2222222",
             "user": self.user.id,
         }
         self.client.force_authenticate(user=self.user)
@@ -36,5 +35,6 @@ class CardViewSetTestCase(APITestCase):
         self.assertEqual(response.status_code, 201)
 
         response = self.client.get("/api/v1/card/")
+        print(response.data)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.data[0]["number"], "2222222")
+        assert "number" in response.data[0]

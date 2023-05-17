@@ -2,6 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 
 from .models import Campain, Card, Coffee, Promotion, Recharge, UserProfile, Order, Buy
+from .utils import create_number
 
 
 class BuySerializer(serializers.ModelSerializer):
@@ -36,7 +37,12 @@ class CampainSerializer(serializers.ModelSerializer):
 class CardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Card
-        fields = "__all__"
+        fields = ("user","number", "creation_date", "last_use")
+        read_only_fields = ("number", "last_use", "creation_date")
+
+    def create(self, validated_data):
+        validated_data["number"] = create_number()
+        return super().create(validated_data)
 
 
 class CoffeeSerializer(serializers.ModelSerializer):
