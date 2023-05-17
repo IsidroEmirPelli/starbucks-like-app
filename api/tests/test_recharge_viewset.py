@@ -112,3 +112,8 @@ class OrderViewSetTestCase(APITestCase):
         response = self.create_order(self.user)
         self.assertEqual(response.status_code, 400)
         assert response.data["error"] != ""
+
+    def test_order_viewset_with_user_not_logged(self):
+        self.client.force_authenticate(user=None)
+        response = self.client.get("/api/v1/recharge/")
+        self.assertEqual(response.status_code, 403)

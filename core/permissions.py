@@ -20,7 +20,10 @@ class ClientPermission(BasePermission):
 
     def has_permission(self, request, view):
         if request.user:
-            return UserProfile.objects.filter(user=request.user).first().role == Role.CLIENT
+            return (
+                UserProfile.objects.filter(user=request.user).first().role
+                == Role.CLIENT
+            )
 
 
 class MarketingPermission(BasePermission):
@@ -30,8 +33,12 @@ class MarketingPermission(BasePermission):
 
     def has_permission(self, request, view):
         if request.user:
-            return UserProfile.objects.filter(user=request.user).first().role == Role.MARKETING
+            return (
+                UserProfile.objects.filter(user=request.user).first().role
+                == Role.MARKETING
+            )
         return False
+
 
 class EmployeePermission(BasePermission):
     """
@@ -40,5 +47,8 @@ class EmployeePermission(BasePermission):
 
     def has_permission(self, request, view):
         if request.user:
-            return UserProfile.objects.filter(user=request.user).first().role == Role.EMPLOYEE
+            return (
+                UserProfile.objects.filter(user=request.user).first().role
+                == Role.EMPLOYEE
+            )
         return False

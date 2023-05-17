@@ -9,7 +9,7 @@ from rest_framework import status
 from core.common.role import Role
 from core.permissions import AdminPermission, MarketingPermission, EmployeePermission
 from core.models import Order, Campain, Card, Coffee, Promotion, Recharge, UserProfile
-from core.utils import create_payment, filters
+from core.utils import create_payment, filters, BasePermissionsViewSet
 from core.serializers import (
     OrderSerializer,
     CampainSerializer,
@@ -136,26 +136,27 @@ class CoffeeViewSet(viewsets.ModelViewSet):
 
 
 class UserViewSet(
-    mixins.CreateModelMixin, mixins.UpdateModelMixin, viewsets.GenericViewSet
+    mixins.CreateModelMixin,
+    mixins.UpdateModelMixin,
+    viewsets.GenericViewSet,
+    BasePermissionsViewSet,
 ):
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    permission_classes_by_action = {
+        "update": [IsAuthenticated],
+        "partial_update": [IsAuthenticated],
+    }
+
+    def get_permissions(self):
+        return BasePermissionsViewSet.get_permissions(self)
 
     def create(self, request, *args, **kwargs):
         if (
             "is_staff" in request.data
             and request.data["is_staff"] == True
-            or "role" in request.data and request.data["role"] in [Role.EMPLOYEE, Role.MARKETING]
+            or "role" in request.data
+            and request.data["role"] in [Role.EMPLOYEE, Role.MARKETING]
         ):
             return Response(status=status.HTTP_403_FORBIDDEN)
         return super().create(request, *args, **kwargs)
-
-    def update(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return super().update(request, *args, **kwargs)
-        return Response(status=status.HTTP_403_FORBIDDEN)
-
-    def partial_update(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return super().partial_update(request, *args, **kwargs)
-        return Response(status=status.HTTP_403_FORBIDDEN)
