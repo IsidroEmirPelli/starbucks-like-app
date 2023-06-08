@@ -1,5 +1,6 @@
 from ..models import UserProfile
 from ..common import Role
+from issue_tracker.utils import create_issue
 
 
 def get_users_from_filters(filters):
